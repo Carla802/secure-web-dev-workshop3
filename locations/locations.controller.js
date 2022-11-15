@@ -8,5 +8,4 @@ router.get('/locations', (req, res) => {
 	return res.status(200).send({locations: []})
 })
 
-
 module.exports = router
