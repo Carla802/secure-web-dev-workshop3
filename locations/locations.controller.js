@@ -4,6 +4,8 @@
 
 const router = require('express').Router()
 const locationsService=require("./locations.service")
+const passport = require("passport");
+const authorizationMiddleware = require("../authorization/authorization.middleware");
 
 router.get('/locations', async (req, res) => {
 	return res.status(200).send({locations: await locationsService.findAll()})
@@ -25,6 +27,11 @@ router.delete('/locations/:id', async (req, res) => {
 	return res.status(200).send({locations: await locationsService.del(req.params.id)})
 })
 
-
+/*router.post('/login',
+	passport.authenticate('local'), { session: false},
+	authorizationMiddleware.canAccess(['admin', 'modo']),
+	async function (req, res) => {
+		return res.status(200).send(req.user)
+	})*/
 
 module.exports = router
