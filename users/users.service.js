@@ -29,7 +29,7 @@ async function checkPassword(username, password){
 }
 
 /**
- * This function generates a JWT (Json Web Token) when a user log in, containing the user's id
+ * This function generates a JWT (Json Web Token) when a user log in, containing only the user's id (in .sub)
  * It uses the secret key in the .env file
  * @param id - id of the user who is logging in
  */

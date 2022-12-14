@@ -13,7 +13,7 @@ router.post('/register',
 router.post('/login',
     passport.authenticate('local', { failureRedirect: '/login', session: false }),
     async (req, res) => {
-        const jwt = await usersService.signJWT(req.user);
+        const jwt = await usersService.signJWT(req.user._id);
         res.status(200).send({ message: "Logged in successfully", token: jwt })
 })
 
