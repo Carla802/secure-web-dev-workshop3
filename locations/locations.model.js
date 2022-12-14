@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+/** This is the mongoose model for the locations*/
 const filmSchema = new mongoose.Schema({
 	filmType: String,
 	filmProducerName: String,

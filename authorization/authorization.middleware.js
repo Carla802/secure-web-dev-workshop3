@@ -1,14 +1,20 @@
-const canAccess = (allowedRoles = []) => (req, res, next) => {
-    if (!allowedRoles || allowedRoles.length == 0) {
-        return next()
-    }
-    if (!req.user) {
-        return res.status(401).send()
-    }
-    if (!req.user.role || !allowedRoles.includes(req.user.role)) {
-        return res.status(403).send()
-    }
-    return next()
-}
+const JWTstrategy = require('passport-jwt').Strategy;
+const passport = require('passport')
+const ExtractJWT = require('passport-jwt').ExtractJwt;
 
-module.exports = { canAccess }
+passport.use(
+    new JWTstrategy(
+        {
+            secretOrKey: process.env.SECRET_JWT,
+            jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
+        },
+        async (token, done) => {
+            try {
+                console.log(token)
+                return done(null, token.sub);
+            } catch (error) {
+                done(error);
+            }
+        }
+    )
+);
