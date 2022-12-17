@@ -70,3 +70,7 @@ Dans le fichier .env, doivent être présentes une variable MONGO_URI contenant 
 
 1. Lancer chaque test dans locations/locations.service.test.js
 2. Lancer chaque test dans users/users.service.test.js
+
+## SonarCloud
+
+https://sonarcloud.io/summary/overall?id=Carla802_secure-web-dev-workshop3
