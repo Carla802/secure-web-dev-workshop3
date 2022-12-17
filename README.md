@@ -1,50 +1,72 @@
-# Workshop 3 - Create an API (ExpressJS)
+# Workshop 3-4-5 documentation
 
-## 🌟 Goal
+## 🗒 Infos générales
 
-> Build a REST API with ExpressJS
+Ce code met en place une API contenant deux routes principales : 
+- /locations
+- /users
 
-## 👷 Prerequisites
+La route /users/register permet de s'inscrire en tant que nouvel utilisateur. On vérifie que l'username est unique et les mots de passe sont hashés avant d'être enregistrés dans la base de données.
 
-1. Fork this repository then clone it on your computer
-2. install Insomnia (or your API Testing tool of choice)
-3. Paste your .env file from workshop2 containing credentials to your Mongo Database
+Les routes /locations/login et /users/login utilisent un middleware (local strategy) pour vérifier que le mot de passe entré matche bien (une fois crypté) avec celui de l'utilisateur trouvé dans la base de données.
 
-## 🗒 What to do
+Toutes les routes /users/me et /locations sont protégées par un middleware d'authentification par token (JWT strategy) et un middleware d'authentification par rôle (RBAC). Le seul rôle accepté est le rôle admin.
 
-> ⚠ Commit your changes after **each** instruction, following the commit message format:
-> ```text
-> feat(1): Initiate NPM Project
-> ```
+Les requêtes suivantes sont possibles : 
 
-1. Install existing packages with `npm install`
-   > ```shell
-   >  npm install
-   > ```
-2. Add NPM packages `express`
-   > Mongoose is a package making mongo request easier and more secure
-   > ```shell
-   > npm install --save express
-   > ```
-3. Put your database credentials in a file named `.env` (from Workshop2)
-4. Take a look at the architecture 
-   > One Folder per entity.
-   > In each folder, 3 files:
-   > 
-   > entity.controller.js -> Presentation Layer, API
-   > 
-   > entity.service.js -> Business Logic Layer
-   > 
-   > entity.model.js -> Database Layer
-5. Implement a "Hello World" route, on GET / that returns "Hello World"
-   1. Visit the route at http://localhost:3000/
-6. Create the API CRUD for Location
-   1. Create routes at Presentation Layer
-   2. Implement business logic in the Location Service
-   > ```
-   > For reference, CRUD:
-   > Create: /locations
-   > Update: /locations/:id
-   > Request (Get All: /locations , Get One: /locations/:id)
-   > Delete: /locations/:id
-   > ```
+Locations :
+- get /locations
+- post /locations
+- post /locations/login
+- get /locations/:id
+- put /locations/:id
+- delete /locations/:id
+
+Users : 
+- post /users/register
+- post /users/login
+- get /users
+- get /users/me
+- put /users/me
+- delete /users/me
+
+Un user est composé d'un username, d'un password et d'un rôle.
+
+## Contenu de .env
+
+Dans le fichier .env, doivent être présentes une variable MONGO_URI contenant le lien de votre database MongoDB, ainsi qu'une variable SECRET_JWT contenant une clé secrète de votre choix ('secret' par exemple).
+
+## Lancer le code
+
+1. lancer index.js
+2. Sur insomnia, pour tester les différentes routes
+   1. Pour se register : ajouter un body JSON à la requête de cette forme :  
+   ```    
+      {  
+          "username": "xxx",   
+          "password": "xxx",  
+          "role": "xxx"  
+      }
+   ```
+   2. Pour se login sur /locations/login ou /users/login : ajouter le même body JSON qui a été registered
+   3. Copier le token qui est retourné une fois login
+   4. Pour accéder à toutes les routes /users/me et /locations, il sera nécessaire d'ajouter une Auth "Bearer Token" et de coller le token précédent dans le champ "token"
+   5. Pour créer une nouvelle location (post /locations) ou en modifier une (put /locations/:id) : ajouter un body JSON de cette forme (exemple) :
+   ```    
+      {
+            "filmName": "xxx"
+      }
+   ```
+   6. Pour modifier l'utilisateur connecté (put /users/me) : ajouter le body JSON suivant :
+   ```    
+      {  
+          "username": "xxx",   
+          "password": "xxx",  
+          "role": "xxx"  
+      }
+   ```
+  
+## Lancer les tests
+
+1. Lancer chaque test dans locations/locations.service.test.js
+2. Lancer chaque test dans users/users.service.test.js

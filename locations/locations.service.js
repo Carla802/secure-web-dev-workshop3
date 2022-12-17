@@ -16,7 +16,7 @@ async function findId(id) {
 	if (!location) {
 		throw new Error("Location not found")
 	}
-	return Location.findById(id)
+	return location
 }
 
 /**
@@ -24,8 +24,9 @@ async function findId(id) {
  * @param body - content of the new location
  */
 async function create(body) {
-	const location = new Location(body)
-	return await location.save()
+	//const location = new Location(body)
+	//return await location.save()
+	return Location.insertMany(body)
 }
 
 /**
